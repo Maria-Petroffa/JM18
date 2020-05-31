@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import Button from './button';
 import { RedoOutlined, CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import Button from './button';
 
 
 const initialState = {
@@ -29,13 +29,13 @@ export default class Timer extends React.Component {
       if (timeCount === 0) {
         this.setState({
           timeStart: Date.now(),
-        })
+        });
       }
       if (timeCount > 0) {
         const newTimeStart = Date.now() - timeCount;
         this.setState({
           timeStart: newTimeStart,
-        })
+        });
       }
 
       this.timerID = setInterval(
@@ -77,9 +77,9 @@ export default class Timer extends React.Component {
         <br />
         <Row>
           <Col span={12} offset={1}>
-            <Button isDisplay={isStartButton} onClickFunc={this.startTimer} icon={<CaretRightOutlined />} text={'Start'} />
-            <Button isDisplay={!isStartButton} onClickFunc={this.startTimer} icon={<PauseOutlined />} text={'Stop'} />
-            <Button isDisplay onClickFunc={this.clearTimer} icon={<RedoOutlined />} text={'Clear'} />
+            <Button isDisplay={isStartButton} onClickFunc={this.startTimer} icon={<CaretRightOutlined />} text="Start" />
+            <Button isDisplay={!isStartButton} onClickFunc={this.startTimer} icon={<PauseOutlined />} text="Stop" />
+            <Button isDisplay onClickFunc={this.clearTimer} icon={<RedoOutlined />} text="Clear" />
           </Col>
         </Row>
       </>

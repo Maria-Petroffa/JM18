@@ -62,7 +62,7 @@ export default class CountdownApp extends React.Component {
   onChangeSlider = (value) => {
     this.setState({
       timePrev: value,
-    })
+    });
   }
 
   onChangeMin = (value) => {
@@ -124,9 +124,9 @@ export default class CountdownApp extends React.Component {
         <br />
         <Row>
           <Col offset={2}>
-            <Button isDisplay={isStartButton} onClickFunc={this.startTimer} icon={<CaretRightOutlined />} text={'Start'} />
-            <Button isDisplay={!isStartButton} onClickFunc={this.stopTimer} icon={<PauseOutlined />} text={'Stop'} />
-            <Button isDisplay onClickFunc={this.clearTimer} icon={<RedoOutlined />} text={'Clear'} />
+            <Button isDisplay={isStartButton} onClickFunc={this.startTimer} icon={<CaretRightOutlined />} text="Start" />
+            <Button isDisplay={!isStartButton} onClickFunc={this.stopTimer} icon={<PauseOutlined />} text="Stop" />
+            <Button isDisplay onClickFunc={this.clearTimer} icon={<RedoOutlined />} text="Clear" />
           </Col>
         </Row>
         <br />

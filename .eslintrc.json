@@ -24,7 +24,8 @@
       "no-restricted-globals": ["off"],
       "react/prop-types": ["off"],
       "react/destructuring-assignment": ["off"],
-      "react/prefer-stateless-function": ["off"]
+      "react/prefer-stateless-function": ["off"],
+      "jsx-a11y/media-has-caption": ["off"]
     },
     "settings": {
       "react": {

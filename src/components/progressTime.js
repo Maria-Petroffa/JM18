@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Progress } from 'antd';
 import sound from '../sound.mp3';
+
 export default class ProgressTime extends React.Component {
   count = () => {
     const { value: { timeCount } } = this.props;
@@ -16,7 +17,7 @@ export default class ProgressTime extends React.Component {
     }
 
     const autoplay = true;
-    return <audio src={sound} autoPlay={autoplay} type={"audio/mpeg"} />;
+    return <audio src={sound} autoPlay={autoplay} type="audio/mpeg" />;
   }
 
   render() {

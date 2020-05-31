@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 
 
-
 export default class Buttons extends React.Component {
-
   render() {
-    const { isDisplay, onClickFunc, icon, text } = this.props;
+    const {
+      isDisplay, onClickFunc, icon, text,
+    } = this.props;
     if (isDisplay === false) { return null; }
 
     return (
@@ -35,6 +35,6 @@ Buttons.propTypes = {
 Buttons.defaultProps = {
   isDisplay: true,
   onClickFunc: null,
-  text: "Button",
+  text: 'Button',
   icon: null,
 };
