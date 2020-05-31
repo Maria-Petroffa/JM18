@@ -1,137 +1,144 @@
 import React from 'react';
 import { Row, Col } from 'antd';
-import Buttons from './buttons';
-import ProgressTime from './progressTime';
-import StartTime from './startTime';
 
+import { RedoOutlined, CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
+import Button from './button';
+import ProgressTime from './progressTime';
+import InputTime from './inputTime';
+
+const initialState = {
+  timePrev: 0,
+  timeCount: 0,
+  timeStart: 0,
+  isStartButton: true,
+  timeInputDisable: false,
+};
 export default class CountdownApp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      min: 0,
-      sec: 0,
-      timeCount: 0,
-      timeStart: 0,
-      isStartButton: true,
-      timeInputDisable: false,
-    };
+    this.state = initialState;
   }
 
+  startTimer = () => {
+    const {
+      isStartButton, timePrev, timeCount, timeInputDisable,
+    } = this.state;
 
-    startButton = () => {
-      const {
-        isStartButton, min, sec, timeCount, timeInputDisable,
-      } = this.state;
-      const startCount = min * 60 + sec;
 
-      if (timeCount === 0) {
-        this.setState({
-          timeCount: startCount,
-          timeStart: startCount,
-        });
-      }
-
-      if (min === 0 && sec === 0 && timeInputDisable === false) { return; }
-
+    if (timeCount === 0) {
       this.setState({
-        isStartButton: !isStartButton,
-        timeInputDisable: true,
-        min: 0,
-        sec: 0,
+        timeCount: timePrev,
+        timeStart: timePrev,
       });
-
-      this.timerID = setInterval(
-        () => this.tick(),
-        1000,
-      );
     }
 
-    stopButton = () => {
-      const { isStartButton } = this.state;
-      this.setState({
-        isStartButton: !isStartButton,
-      });
-      clearInterval(this.timerID);
-    }
+    if (timePrev === 0 && timeInputDisable === false) { return; }
 
-    clearButton = () => {
-      clearInterval(this.timerID);
+    this.setState({
+      isStartButton: !isStartButton,
+      timeInputDisable: true,
+      timePrev: 0,
+    });
+
+    this.timerID = setInterval(
+      () => this.tick(),
+      1000,
+    );
+  }
+
+  stopTimer = () => {
+    const { isStartButton } = this.state;
+    this.setState({
+      isStartButton: !isStartButton,
+    });
+    clearInterval(this.timerID);
+  }
+
+  clearTimer = () => {
+    clearInterval(this.timerID);
+    this.setState(initialState);
+  }
+
+  onChangeSlider = (value) => {
+    this.setState({
+      timePrev: value,
+    })
+  }
+
+  onChangeMin = (value) => {
+    if (isNaN(value)) {
+      return;
+    }
+    const { timePrev } = this.state;
+    const setTimePrev = timePrev + (value - Math.trunc(timePrev / 60)) * 60;
+
+    this.setState({
+      timePrev: setTimePrev,
+    });
+  };
+
+  onChangeSec = (value) => {
+    if (isNaN(value)) {
+      return;
+    }
+    const { timePrev } = this.state;
+    const setTimePrev = timePrev + (value - (timePrev % 60));
+    this.setState({
+      timePrev: setTimePrev,
+    });
+  };
+
+  tick = () => {
+    const { timeCount } = this.state;
+    if (timeCount === 0) {
       this.setState({
-        isStartButton: true,
+        progressTime: 100,
         timeInputDisable: false,
-        timeCount: 0,
-        timeStart: 0,
+        isStartButton: true,
       });
+      clearInterval(this.timerID);
+      return;
     }
 
-    onChangeMin = (value) => {
-      if (isNaN(value)) {
-        return;
-      }
-      this.setState({
-        min: value,
-      });
-    };
+    const count = timeCount - 1;
+    this.setState({
+      timeCount: count,
+    });
+  }
 
-    onChangeSec = (value) => {
-      if (isNaN(value)) {
-        return;
-      }
-      this.setState({
-        sec: value,
-      });
-    };
-
-    tick = () => {
-      const { timeCount } = this.state;
-      if (timeCount === 0) {
-        this.setState({
-          progressTime: 100,
-        });
-        clearInterval(this.timerID);
-        return;
-      }
-
-      const count = timeCount - 1;
-      this.setState({
-        timeCount: count,
-      });
-    }
-
-    render() {
-      return (
-        <>
-          <Row>
-            <Col offset={1} span={8}>
-              <StartTime
-                onChangeMin={this.onChangeMin}
-                onChangeSec={this.onChangeSec}
-                value={this.state}
-              />
-            </Col>
-          </Row>
-          <br />
-          <br />
-          <Row>
-            <Col offset={3}>
-              <Buttons
-                view={this.state}
-                startButton={this.startButton}
-                stopButton={this.stopButton}
-                clearButton={this.clearButton}
-              />
-            </Col>
-          </Row>
-          <br />
-          <br />
-          <Row>
-            <Col offset={4}>
-              <ProgressTime
-                value={this.state}
-              />
-            </Col>
-          </Row>
-        </>
-      );
-    }
+  render() {
+    const { isStartButton } = this.state;
+    return (
+      <>
+        <Row>
+          <Col offset={1} span={8}>
+            <InputTime
+              onChangeMin={this.onChangeMin}
+              onChangeSec={this.onChangeSec}
+              onChangeSlider={this.onChangeSlider}
+              value={this.state}
+            />
+          </Col>
+        </Row>
+        <br />
+        <br />
+        <Row>
+          <Col offset={2}>
+            <Button isDisplay={isStartButton} onClickFunc={this.startTimer} icon={<CaretRightOutlined />} text={'Start'} />
+            <Button isDisplay={!isStartButton} onClickFunc={this.stopTimer} icon={<PauseOutlined />} text={'Stop'} />
+            <Button isDisplay onClickFunc={this.clearTimer} icon={<RedoOutlined />} text={'Clear'} />
+          </Col>
+        </Row>
+        <br />
+        <br />
+        <Row>
+          <Col offset={4}>
+            <ProgressTime
+              value={this.state}
+            />
+          </Col>
+        </Row>
+      </>
+    );
+  }
 }
