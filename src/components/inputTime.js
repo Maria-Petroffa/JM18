@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   Row, Col, Slider, InputNumber,
 } from 'antd';
+
 export default class InputTime extends React.Component {
   handleChangeMin = (value) => {
     const { onChangeMin } = this.props;
