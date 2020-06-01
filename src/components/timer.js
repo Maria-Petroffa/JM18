@@ -3,7 +3,6 @@ import { Row, Col } from 'antd';
 import { RedoOutlined, CaretRightOutlined, PauseOutlined } from '@ant-design/icons';
 import Button from './button';
 
-
 const initialState = {
   timeStart: 0,
   timeCount: 0,
@@ -22,7 +21,7 @@ export default class Timer extends React.Component {
     });
 
     if (isStartButton === false) {
-      clearInterval(this.timerID);
+      clearTimeout(this.timerID);
     }
 
     if (isStartButton === true) {
@@ -38,7 +37,7 @@ export default class Timer extends React.Component {
         });
       }
 
-      this.timerID = setInterval(
+      this.timerID = setTimeout(
         () => this.tick(),
         80,
       );
@@ -46,7 +45,7 @@ export default class Timer extends React.Component {
   }
 
   clearTimer = () => {
-    clearInterval(this.timerID);
+    clearTimeout(this.timerID);
     this.setState(initialState);
   }
 
@@ -54,6 +53,7 @@ export default class Timer extends React.Component {
     const { timeStart } = this.state;
     const count = Date.now() - timeStart;
     this.setState({ timeCount: count });
+    this.timerID = setTimeout(this.tick, 80);
   }
 
   timeСounter = () => {

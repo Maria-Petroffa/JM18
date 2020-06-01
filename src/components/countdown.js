@@ -24,7 +24,6 @@ export default class CountdownApp extends React.Component {
       isStartButton, timePrev, timeCount, timeInputDisable,
     } = this.state;
 
-
     if (timeCount === 0) {
       this.setState({
         timeCount: timePrev,
@@ -40,7 +39,7 @@ export default class CountdownApp extends React.Component {
       timePrev: 0,
     });
 
-    this.timerID = setInterval(
+    this.timerID = setTimeout(
       () => this.tick(),
       1000,
     );
@@ -51,11 +50,11 @@ export default class CountdownApp extends React.Component {
     this.setState({
       isStartButton: !isStartButton,
     });
-    clearInterval(this.timerID);
+    clearTimeout(this.timerID);
   }
 
   clearTimer = () => {
-    clearInterval(this.timerID);
+    clearTimeout(this.timerID);
     this.setState(initialState);
   }
 
@@ -96,7 +95,7 @@ export default class CountdownApp extends React.Component {
         timeInputDisable: false,
         isStartButton: true,
       });
-      clearInterval(this.timerID);
+      clearTimeout(this.timerID);
       return;
     }
 
@@ -104,6 +103,10 @@ export default class CountdownApp extends React.Component {
     this.setState({
       timeCount: count,
     });
+    this.timerID = setTimeout(
+      () => this.tick(),
+      1000,
+    );
   }
 
   render() {
